@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberService {
     private final MemberRepository memberRepository;//서비스를 만들려면 레파지토리가 1순위
 
@@ -18,7 +17,6 @@ public class MemberService {
 
     */
 
-@Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
         //외부에서 memberRepository를 넣어줌
