@@ -3,13 +3,22 @@ package hello.hellospring.service;
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
     private final MemberRepository memberRepository;//서비스를 만들려면 레파지토리가 1순위
 
+    /*service가 붙어있으면 스프링 컨테이너에 저장하고, 생성자(MemberService) 호출-> 근데 Autowirde 붙어있어서 멤버 서비스가 레파지토리가 필요하구나
+     라고 인식해서 컨테이너에 있는 멤버 리포지토리를 넣어줌.
+
+    */
+
+@Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
         //외부에서 memberRepository를 넣어줌
