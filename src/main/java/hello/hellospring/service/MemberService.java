@@ -4,11 +4,12 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class MemberService {
     private final MemberRepository memberRepository;//서비스를 만들려면 레파지토리가 1순위
 
@@ -16,7 +17,7 @@ public class MemberService {
      라고 인식해서 컨테이너에 있는 멤버 리포지토리를 넣어줌.
 
     */
-
+@Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
         //외부에서 memberRepository를 넣어줌
@@ -28,6 +29,7 @@ public class MemberService {
 
     //result가 null이 아니라 값이 있으면 해당 구문 수행 (옵셔널이라서 가능함)
         //추가적으로 orelseget은 값이 있으면 꺼내고 없으면 디폴트 값을 넣어서 꺼내. 라는 의미로 수행을 많이 함
+
         vaildateDuplicateMember(member); //중복회원 검증
         memberRepository.save(member);
             return member.getId();

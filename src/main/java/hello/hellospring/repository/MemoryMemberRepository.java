@@ -1,9 +1,11 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+@Repository
 public class MemoryMemberRepository implements MemberRepository{
 //    save를 할때 저장할 곳
     private static Map<Long, Member> store = new HashMap<>();
@@ -29,11 +31,23 @@ public class MemoryMemberRepository implements MemberRepository{
                 .filter(member -> member.getName().equals(name))
                 .findAny();
     }
+
+    @Override
+    public Optional<Member> findById(Long id) {
+        return Optional.empty();
+    }
+
     @Override
     public List<Member> findAll() {
 //        스토어에 있는 멤버들이 반환됨.
         return new ArrayList<>(store.values());
     }
+
+    @Override
+    public Optional<Member> findByName(String name) {
+        return Optional.empty();
+    }
+
     public void clearStore(){
         store.clear();
     }
