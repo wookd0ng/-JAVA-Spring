@@ -1,15 +1,11 @@
 package hello.hellospring.repository;
-
 import hello.hellospring.domain.Member;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 public class JdbcMemberRepository implements MemberRepository {
     private final DataSource dataSource;
     public JdbcMemberRepository(DataSource dataSource) {
@@ -42,6 +38,16 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> fingById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Member> fingByName(String name) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Member> findById(Long id) {
         String sql = "select * from member where id = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -63,44 +69,7 @@ public class JdbcMemberRepository implements MemberRepository {
             throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt, rs);
-        }    }
-
-    @Override
-    public Optional<Member> fingByName(String name) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Member> findById(Long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Member> findByName(String name) {
-        String sql = "select * from member where name = ?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, name);
-            rs = pstmt.executeQuery();
-            if(rs.next()) {
-                Member member = new Member();
-                member.setId(rs.getLong("id"));
-                member.setName(rs.getString("name"));
-                return Optional.of(member);
-            }
-            return Optional.empty();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt, rs);
-        }
-    }
-
-
+        } }
     @Override
     public List<Member> findAll() {
         String sql = "select * from member";
@@ -125,10 +94,32 @@ public class JdbcMemberRepository implements MemberRepository {
             close(conn, pstmt, rs);
         }
     }
-
+    @Override
+    public Optional<Member> findByName(String name) {
+        String sql = "select * from member where name = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+            if(rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getLong("id"));
+                member.setName(rs.getString("name"));
+                return Optional.of(member);
+            }
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
     private Connection getConnection() {
-        JdbcMemberRepository DataSourceUtils;
-        return org.springframework.jdbc.datasource.DataSourceUtils.getConnection(dataSource);
+        return DataSourceUtils.getConnection(dataSource);
     }
     private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
         try {
@@ -156,4 +147,3 @@ public class JdbcMemberRepository implements MemberRepository {
     private void close(Connection conn) throws SQLException {
         DataSourceUtils.releaseConnection(conn, dataSource);
     } }
-
